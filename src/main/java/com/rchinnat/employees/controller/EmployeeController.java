@@ -1,10 +1,11 @@
 package com.rchinnat.employees.controller;
 
 import com.rchinnat.employees.entity.Employee;
+import com.rchinnat.employees.mapper.EmployeeMapper;
 import com.rchinnat.employees.model.EmployeeDTO;
 import com.rchinnat.employees.service.IEmployeeService;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/employees")
-@AllArgsConstructor
+@RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173")
 public class EmployeeController {
 
     private final IEmployeeService employeeService;
@@ -31,8 +33,9 @@ public class EmployeeController {
     }
 
     @PostMapping()
-    public ResponseEntity<String> addEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
+    public ResponseEntity<EmployeeDTO> addEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
         Employee emp = employeeService.addEmployee(employeeDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Student with ID Created - " + emp.getId() + " => Name: " + emp.getName());
+        return ResponseEntity.status(HttpStatus.CREATED).body(EmployeeMapper.entityToDto(emp));
+        //return ResponseEntity.status(HttpStatus.CREATED).body("Student with ID Created - " + emp.getId() + " => Name: " + emp.getName());
     }
 }

@@ -2,15 +2,19 @@ spring:
   application:
     name: employees
   datasource:
-    url: jdbc:h2:file:/Users/rajprakash/workspace/db/employee;AUTO_SERVER=TRUE
-    driverClassName: org.h2.Driver
-    username: sa
-    password: ''
-  h2:
-    console:
-      enabled: true
+    url: jdbc:mysql://localhost:3306/employees
+    username: root
+    password: root
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
     hibernate:
       ddl-auto: update
-    show-sql: true
+  h2:
+    console:
+      enabled: false
+
+
+#docker run -p 3306:3306 --name employees \
+#-e MYSQL_ROOT_PASSWORD=root \
+#-e MYSQL_DATABASE=employees \
+#-v /Users/rajprakash/projects/docker/volumes/employees:/var/lib/mysql -d mysql

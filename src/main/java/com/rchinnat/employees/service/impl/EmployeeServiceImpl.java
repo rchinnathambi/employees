@@ -1,6 +1,7 @@
 package com.rchinnat.employees.service.impl;
 
 import com.rchinnat.employees.entity.Employee;
+import com.rchinnat.employees.exception.ResourceNotFoundException;
 import com.rchinnat.employees.mapper.EmployeeMapper;
 import com.rchinnat.employees.model.EmployeeDTO;
 import com.rchinnat.employees.repository.EmployeeRepository;
@@ -9,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,8 +27,11 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
     @Override
     public EmployeeDTO getEmployee(Integer id) {
-        Employee emp = employeeRepository.findById(id).get();
-        return EmployeeMapper.entityToDto(emp);
+        Optional<Employee> emp = employeeRepository.findById(id);
+        if(!emp.isPresent()) {
+            throw new ResourceNotFoundException("No such employee with id: " + id);
+        }
+        return EmployeeMapper.entityToDto(emp.get());
     }
 
     @Override

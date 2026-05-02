@@ -1,0 +1,38 @@
+services:
+  employeesdb:
+    image: mysql
+    container_name: employees
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 10
+      interval: 10s
+      start_period: 10s
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: employees
+    volumes:
+      - "/Users/rajprakash/projects/docker/volumes/employees:/var/lib/mysql"
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
+
+  employees_service:
+    image: "rajprakashcr/employees:0.0.1-SNAPSHOT"
+    container_name: "employees-ms"
+    ports:
+      - "7051:8080"
+    depends_on:
+      employeesdb:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "employees"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://employeesdb:3306/employees"
+    networks:
+      - rchinnat
+
+networks:
+  rchinnat:
+    driver: "bridge"
