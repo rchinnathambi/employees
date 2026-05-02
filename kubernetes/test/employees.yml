@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: employees-deployment
+  labels:
+    app: employees
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: employees
+  template:
+    metadata:
+      labels:
+        app: employees
+    spec:
+      containers:
+        - name: employees
+          image: "rajprakashcr/employees:0.0.1-SNAPSHOT"
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_APPLICATION_NAME
+              value: "employees"
+            - name: SPRING_PROFILES_ACTIVE
+              value: "test"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: employees
+spec:
+  selector:
+    app: employees
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
