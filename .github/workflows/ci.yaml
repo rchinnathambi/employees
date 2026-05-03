@@ -26,4 +26,4 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Build with Maven an Push Docker Image
-        run: mvn compile jib:build -Dimage='${{secrets.DOCKER_USERNAME}}/employees:${project.version}'
+        run: mvn compile jib:build -Ddocker.username=${{ secrets.DOCKER_USERNAME }}
