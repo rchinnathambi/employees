@@ -1,8 +1,10 @@
+server:
+  port: 7051
 spring:
   application:
     name: employees
   datasource:
-    url: jdbc:h2:file:/Users/rajprakash/workspace/db/employee;AUTO_SERVER=TRUE
+    url: jdbc:h2:file:~/workspace/db/employee;AUTO_SERVER=TRUE
     driverClassName: org.h2.Driver
     username: sa
     password: ''
